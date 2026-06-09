@@ -1,0 +1,16 @@
+const Map<int, ({String en, String ar})> masoomNames = {
+  1: (en: 'Prophet Muhammad (SAWA)', ar: 'النبي محمد (ص)'),
+  2: (en: 'Lady Fatima al-Zahra (SA)', ar: 'السيدة فاطمة الزهراء (ع)'),
+  3: (en: 'Imam Ali ibn Abi Talib (AS)', ar: 'الإمام علي بن أبي طالب (ع)'),
+  4: (en: 'Imam Hasan al-Mujtaba (AS)', ar: 'الإمام الحسن المجتبى (ع)'),
+  5: (en: 'Imam Husayn (AS)', ar: 'الإمام الحسين (ع)'),
+  6: (en: 'Imam Ali Zayn al-Abidin (AS)', ar: 'الإمام علي زين العابدين (ع)'),
+  7: (en: 'Imam Muhammad al-Baqir (AS)', ar: 'الإمام محمد الباقر (ع)'),
+  8: (en: 'Imam Ja\'far al-Sadiq (AS)', ar: 'الإمام جعفر الصادق (ع)'),
+  9: (en: 'Imam Musa al-Kadhim (AS)', ar: 'الإمام موسى الكاظم (ع)'),
+  10: (en: 'Imam Ali al-Ridha (AS)', ar: 'الإمام علي الرضا (ع)'),
+  11: (en: 'Imam Muhammad al-Jawad (AS)', ar: 'الإمام محمد الجواد (ع)'),
+  12: (en: 'Imam Ali al-Hadi (AS)', ar: 'الإمام علي الهادي (ع)'),
+  13: (en: 'Imam Hasan al-Askari (AS)', ar: 'الإمام الحسن العسكري (ع)'),
+  14: (en: 'Imam al-Mahdi (AJ)', ar: 'الإمام المهدي (عج)'),
+};

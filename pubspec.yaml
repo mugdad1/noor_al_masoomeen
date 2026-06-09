@@ -1,0 +1,54 @@
+name: noor_al_masoomeen
+description: Daily manaqib, hadith, and khisal from the 14 Masoomeen
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.11.5
+
+dependencies:
+  flutter:
+    sdk: flutter
+  provider: 6.1.2
+  shared_preferences: 2.3.3
+  flutter_local_notifications: 18.0.1
+  hijri: 3.0.0
+  share_plus: 10.0.2
+  timezone: 0.9.4
+  intl: 0.19.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: 4.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/data/content.json
+
+  fonts:
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter.ttc
+          weight: 100
+        - asset: assets/fonts/Inter.ttc
+          weight: 200
+        - asset: assets/fonts/Inter.ttc
+          weight: 300
+        - asset: assets/fonts/Inter.ttc
+          weight: 400
+        - asset: assets/fonts/Inter.ttc
+          weight: 500
+        - asset: assets/fonts/Inter.ttc
+          weight: 600
+        - asset: assets/fonts/Inter.ttc
+          weight: 700
+        - asset: assets/fonts/Inter.ttc
+          weight: 800
+        - asset: assets/fonts/Inter.ttc
+          weight: 900
+    - family: NotoNaskhArabic
+      fonts:
+        - asset: assets/fonts/NotoNaskhArabic-Regular.ttf
+          weight: 400

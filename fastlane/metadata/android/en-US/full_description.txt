@@ -1,0 +1,15 @@
+Noor al-Masoomeen (نور المعصومين) delivers a daily spiritual reading from the 14 Masoomeen (AS) — Prophet Muhammad (SAWA), Lady Fatima al-Zahra (SA), and the Twelve Imams (AS).
+
+Features:
+• Daily Entry — Pick a category (Manqabah, Hadith, Khisal) and receive a daily reading
+• 330 Entries — 110 per category with full Arabic tashkeel and English translations
+• Full Library — Browse, search (with tashkeel-stripping), and filter by category
+• Favorites — Bookmark entries for quick access
+• Calendar Archive — Hijri calendar grid of past daily entries
+• Dark Mode — Light/dark/system theme with Material 3 green accent
+• Language Swap — Full Arabic or full English display
+• Font Sizing — Small / Medium / Large presets
+• Daily Notification — Optional reminder at a chosen time
+• Share & Copy — Share entries or copy to clipboard
+
+🔒 100% offline. No internet permission. No analytics. No tracking. All data is bundled in the app.
