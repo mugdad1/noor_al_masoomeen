@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:noor_al_masoomeen/providers/content_provider.dart';
 import 'package:noor_al_masoomeen/screens/library_screen.dart';
 import 'package:noor_al_masoomeen/screens/favorites_screen.dart';
 import 'package:noor_al_masoomeen/screens/about_screen.dart';
 import 'package:noor_al_masoomeen/screens/settings_screen.dart';
 import 'package:noor_al_masoomeen/screens/calendar_archive_screen.dart';
-import 'package:noor_al_masoomeen/utils/categories.dart';
-import 'package:noor_al_masoomeen/utils/constants.dart';
 import 'package:noor_al_masoomeen/widgets/daily_entry_card.dart';
-import 'package:noor_al_masoomeen/widgets/category_dialog.dart';
 import 'package:noor_al_masoomeen/widgets/loading_state_widget.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -75,31 +71,6 @@ class _HomeTab extends StatefulWidget {
 
 class _HomeTabState extends State<_HomeTab> {
   @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => _loadSavedCategory());
-  }
-
-  Future<void> _loadSavedCategory() async {
-    final prefs = await SharedPreferences.getInstance();
-    final key = prefs.getString(kPrefsTodaysCategory);
-    if (key == null) return;
-    if (!mounted) return;
-    try {
-      final category = EntryCategory.fromKey(key);
-      context.read<ContentProvider>().getDaily(DateTime.now(), category);
-    } catch (_) {}
-  }
-
-  void _onCategoryPicked(EntryCategory category) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(kPrefsTodaysCategory, category.key);
-    if (mounted) {
-      context.read<ContentProvider>().getDaily(DateTime.now(), category);
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -152,27 +123,7 @@ class _HomeTabState extends State<_HomeTab> {
             );
           }
           if (provider.dailyEntry == null) {
-            return Center(
-              child: Padding(
-                padding: const EdgeInsets.all(24),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      'اختر فئة اليوم',
-                      style: Theme.of(context).textTheme.titleLarge,
-                    ),
-                    const SizedBox(height: 16),
-                    FilledButton(
-                      onPressed: () {
-                        showCategoryDialog(context, _onCategoryPicked);
-                      },
-                      child: const Text('اختيار فئة'),
-                    ),
-                  ],
-                ),
-              ),
-            );
+            return const LoadingStateWidget();
           }
           return SingleChildScrollView(
             child: DailyEntryCard(entry: provider.dailyEntry!),

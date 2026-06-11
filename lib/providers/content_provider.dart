@@ -1,9 +1,12 @@
+import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/foundation.dart' hide Category;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:noor_al_masoomeen/data/content_repository.dart';
 import 'package:noor_al_masoomeen/models/entry.dart';
 import 'package:noor_al_masoomeen/utils/arabic_utils.dart';
 import 'package:noor_al_masoomeen/utils/categories.dart';
+import 'package:noor_al_masoomeen/utils/constants.dart';
 
 class ContentProvider extends ChangeNotifier {
   final ContentRepository _repository;
@@ -15,9 +18,17 @@ class ContentProvider extends ChangeNotifier {
   String _searchQuery = '';
   bool _isLoading = false;
   String? _errorMessage;
+  Timer? _midnightTimer;
+  int _lastDay = DateTime.now().day;
 
   ContentProvider(this._repository) {
     loadContent();
+  }
+
+  @override
+  void dispose() {
+    _midnightTimer?.cancel();
+    super.dispose();
   }
 
   List<Entry> get entries {
@@ -57,11 +68,60 @@ class ContentProvider extends ChangeNotifier {
       _entries = _repository.entries;
       _isLoading = false;
       notifyListeners();
+      await _loadTodaysEntry(prefs);
+      _startMidnightTimer();
     } catch (e) {
       _isLoading = false;
       _errorMessage = 'المحتوى غير متوفر. الرجاء إعادة التثبيت.';
       notifyListeners();
     }
+  }
+
+  Future<void> _loadTodaysEntry(SharedPreferences prefs) async {
+    final key = _dateKey(DateTime.now());
+    final raw = prefs.getString(kPrefsDailyHistory) ?? '{}';
+    final history = Map<String, String>.from(jsonDecode(raw) as Map);
+    final entryId = history[key];
+
+    if (entryId != null) {
+      _dailyEntry = _repository.byId(entryId);
+    }
+
+    if (_dailyEntry == null) {
+      _pickAndSaveToday(prefs, key, history);
+    } else {
+      notifyListeners();
+    }
+  }
+
+  void _pickAndSaveToday(SharedPreferences prefs, String key, Map<String, String> history) async {
+    if (_entries.isEmpty) return;
+    final entry = _repository.getRandom();
+    _dailyEntry = entry;
+    history[key] = entry.id;
+    await prefs.setString(kPrefsDailyHistory, jsonEncode(history));
+    notifyListeners();
+  }
+
+  void _startMidnightTimer() {
+    _midnightTimer?.cancel();
+    _midnightTimer = Timer.periodic(const Duration(minutes: 1), (_) async {
+      final now = DateTime.now();
+      if (now.day != _lastDay) {
+        _lastDay = now.day;
+        final prefs = await SharedPreferences.getInstance();
+        final key = _dateKey(now);
+        final raw = prefs.getString(kPrefsDailyHistory) ?? '{}';
+        final history = Map<String, String>.from(jsonDecode(raw) as Map);
+        _pickAndSaveToday(prefs, key, history);
+      }
+    });
+  }
+
+  String _dateKey(DateTime date) {
+    return '${date.year.toString().padLeft(4, "0")}'
+        '-${date.month.toString().padLeft(2, "0")}'
+        '-${date.day.toString().padLeft(2, "0")}';
   }
 
   void setCategory(EntryCategory category) {
@@ -89,20 +149,13 @@ class ContentProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void getDaily(DateTime date, EntryCategory category) {
-    try {
-      _dailyEntry = _repository.getDaily(date, category);
-      notifyListeners();
-    } catch (e) {
-      _dailyEntry = null;
-      _errorMessage = 'لا توجد إدخالات متاحة في هذه الفئة بعد.';
-      notifyListeners();
-    }
-  }
-
-  void getRandom() {
-    _dailyEntry = _repository.getRandom();
-    notifyListeners();
+  void getRandom() async {
+    if (_entries.isEmpty) return;
+    final prefs = await SharedPreferences.getInstance();
+    final key = _dateKey(DateTime.now());
+    final raw = prefs.getString(kPrefsDailyHistory) ?? '{}';
+    final history = Map<String, String>.from(jsonDecode(raw) as Map);
+    _pickAndSaveToday(prefs, key, history);
   }
 
   Entry? getById(String id) {

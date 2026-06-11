@@ -7,10 +7,8 @@ const String kPrefsNotifTime = 'notif_time';
 const String kPrefsDailyHistory = 'daily_history';
 const String kPrefsContentVersion = 'content_version';
 const String kPrefsOnboardingDone = 'onboarding_done';
-const String kPrefsTodaysCategory = 'todays_category';
-
 const Duration kSearchDebounce = Duration(milliseconds: 300);
 const Duration kSplashDuration = Duration(milliseconds: 1800);
 const int kMaxArchiveMonthsBack = 12;
-const String kAppVersion = '1.1.0';
+const String kAppVersion = '1.2.0';
 const String kAppVersionLabel = 'الإصدار $kAppVersion';
