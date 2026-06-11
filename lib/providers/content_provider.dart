@@ -1,12 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/foundation.dart' hide Category;
+import 'package:home_widget/home_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:noor_al_masoomeen/data/content_repository.dart';
 import 'package:noor_al_masoomeen/models/entry.dart';
 import 'package:noor_al_masoomeen/utils/arabic_utils.dart';
 import 'package:noor_al_masoomeen/utils/categories.dart';
 import 'package:noor_al_masoomeen/utils/constants.dart';
+import 'package:noor_al_masoomeen/utils/masoom_data.dart';
 
 class ContentProvider extends ChangeNotifier {
   final ContentRepository _repository;
@@ -101,6 +103,7 @@ class ContentProvider extends ChangeNotifier {
     history[key] = entry.id;
     await prefs.setString(kPrefsDailyHistory, jsonEncode(history));
     notifyListeners();
+    _updateWidget();
   }
 
   void _startMidnightTimer() {
@@ -147,6 +150,14 @@ class ContentProvider extends ChangeNotifier {
   void search(String query) {
     _searchQuery = query;
     notifyListeners();
+  }
+
+  Future<void> _updateWidget() async {
+    if (_dailyEntry == null) return;
+    final masoom = masoomNames[_dailyEntry!.masoomIndex];
+    await HomeWidget.saveWidgetData('widget_masoom', masoom?.ar ?? '');
+    await HomeWidget.saveWidgetData('widget_text', _dailyEntry!.arabicText);
+    await HomeWidget.updateWidget(androidName: 'NoorWidgetProvider');
   }
 
   void getRandom() async {
