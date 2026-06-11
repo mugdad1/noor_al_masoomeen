@@ -10,5 +10,5 @@ const String kPrefsOnboardingDone = 'onboarding_done';
 const Duration kSearchDebounce = Duration(milliseconds: 300);
 const Duration kSplashDuration = Duration(milliseconds: 1800);
 const int kMaxArchiveMonthsBack = 12;
-const String kAppVersion = '1.2.0';
+const String kAppVersion = '1.2.1';
 const String kAppVersionLabel = 'الإصدار $kAppVersion';
