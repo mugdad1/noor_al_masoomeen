@@ -11,6 +11,7 @@ class ContentProvider extends ChangeNotifier {
   List<Entry> _entries = [];
   Entry? _dailyEntry;
   EntryCategory? _selectedCategory;
+  int? _selectedMasoomIndex;
   String _searchQuery = '';
   bool _isLoading = false;
   String? _errorMessage;
@@ -23,6 +24,9 @@ class ContentProvider extends ChangeNotifier {
     var result = _entries;
     if (_selectedCategory != null) {
       result = result.where((e) => e.category == _selectedCategory!.key).toList();
+    }
+    if (_selectedMasoomIndex != null) {
+      result = result.where((e) => e.masoomIndex == _selectedMasoomIndex).toList();
     }
     if (_searchQuery.isNotEmpty) {
       final q = normalizeArabic(_searchQuery.toLowerCase());
@@ -37,6 +41,7 @@ class ContentProvider extends ChangeNotifier {
   List<Entry> get allEntries => List.unmodifiable(_entries);
   Entry? get dailyEntry => _dailyEntry;
   EntryCategory? get selectedCategory => _selectedCategory;
+  int? get selectedMasoomIndex => _selectedMasoomIndex;
   String get searchQuery => _searchQuery;
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
@@ -66,6 +71,16 @@ class ContentProvider extends ChangeNotifier {
 
   void clearCategory() {
     _selectedCategory = null;
+    notifyListeners();
+  }
+
+  void setMasoom(int? index) {
+    _selectedMasoomIndex = index;
+    notifyListeners();
+  }
+
+  void clearMasoom() {
+    _selectedMasoomIndex = null;
     notifyListeners();
   }
 

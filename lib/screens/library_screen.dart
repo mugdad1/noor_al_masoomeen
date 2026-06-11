@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:noor_al_masoomeen/providers/content_provider.dart';
 import 'package:noor_al_masoomeen/screens/detail_screen.dart';
 import 'package:noor_al_masoomeen/utils/categories.dart';
+import 'package:noor_al_masoomeen/utils/masoom_data.dart';
 import 'package:noor_al_masoomeen/widgets/empty_state_widget.dart';
 import 'package:noor_al_masoomeen/widgets/entry_card.dart';
 import 'package:noor_al_masoomeen/widgets/loading_state_widget.dart';
@@ -31,6 +32,16 @@ class LibraryScreen extends StatelessWidget {
                     provider.clearCategory();
                   } else {
                     provider.setCategory(category);
+                  }
+                },
+              ),
+              _MasoomChips(
+                selectedIndex: provider.selectedMasoomIndex,
+                onSelected: (index) {
+                  if (index == null) {
+                    provider.clearMasoom();
+                  } else {
+                    provider.setMasoom(index);
                   }
                 },
               ),
@@ -117,6 +128,59 @@ class _CategoryChips extends StatelessWidget {
         label: Text(label),
         selected: isSelected,
         onSelected: (_) => onSelected(category),
+      ),
+    );
+  }
+}
+
+class _MasoomChips extends StatelessWidget {
+  final int? selectedIndex;
+  final ValueChanged<int?> onSelected;
+
+  const _MasoomChips({
+    required this.selectedIndex,
+    required this.onSelected,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: [
+            _buildChip(context, 'الكل', null, selectedIndex == null),
+            ...masoomNames.entries.map(
+              (entry) => _buildChip(
+                context,
+                entry.value.ar,
+                entry.key,
+                selectedIndex == entry.key,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildChip(
+    BuildContext context,
+    String label,
+    int? index,
+    bool isSelected,
+  ) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 6),
+      child: ChoiceChip(
+        label: Text(label),
+        selected: isSelected,
+        onSelected: (_) => onSelected(index),
+        labelStyle: TextStyle(
+          fontSize: 12,
+          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+        ),
       ),
     );
   }
