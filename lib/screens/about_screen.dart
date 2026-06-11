@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:noor_al_masoomeen/utils/constants.dart';
 
 class AboutScreen extends StatelessWidget {
   const AboutScreen({super.key});
@@ -20,7 +21,7 @@ class AboutScreen extends StatelessWidget {
               style: Theme.of(context).textTheme.headlineSmall,
             ),
             const SizedBox(height: 8),
-            const Text('الإصدار 1.0.0'),
+            const Text(kAppVersionLabel),
             const SizedBox(height: 24),
             const Text('صنع بحب لأهل البيت (عليهم السلام)'),
           ],

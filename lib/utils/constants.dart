@@ -12,3 +12,5 @@ const String kPrefsTodaysCategory = 'todays_category';
 const Duration kSearchDebounce = Duration(milliseconds: 300);
 const Duration kSplashDuration = Duration(milliseconds: 1800);
 const int kMaxArchiveMonthsBack = 12;
+const String kAppVersion = '1.1.0';
+const String kAppVersionLabel = 'الإصدار $kAppVersion';
