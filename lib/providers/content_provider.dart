@@ -155,8 +155,10 @@ class ContentProvider extends ChangeNotifier {
   Future<void> _updateWidget() async {
     if (_dailyEntry == null) return;
     final masoom = masoomNames[_dailyEntry!.masoomIndex];
+    final category = EntryCategory.fromKey(_dailyEntry!.category);
     await HomeWidget.saveWidgetData('widget_masoom', masoom?.ar ?? '');
     await HomeWidget.saveWidgetData('widget_text', _dailyEntry!.arabicText);
+    await HomeWidget.saveWidgetData('widget_category', category.labelAr);
     await HomeWidget.updateWidget(androidName: 'NoorWidgetProvider');
   }
 
